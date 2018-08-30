@@ -1,0 +1,157 @@
+:root {
+  --app_width: 900px;
+  --app-header_height: 3em;
+  --app-chooser_input_user: 30em;
+  --font-size: 1em;
+}
+@media only screen and (max-width: 1000px) {
+  :root {
+    --app_width: 90%;
+    --app-chooser_input_user: 25em;
+  }
+}
+@media only screen and (max-width: 800px) {
+  :root {
+    --app_width: 95%;
+    --app-chooser_input_user: 20em;
+    --font-size: 0.8em;
+  }
+}
+@media only screen and (max-width: 500px) {
+  :root {
+    --app_width: 100%;
+    --app-chooser_input_user: 15em;
+    --font-size: 0.7em;
+  }
+}
+@media only screen and (max-width: 420px) {
+  :root {
+    --font-size: 0.5em;
+  }
+}
+.App-header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  top: 0;
+  width: 100%;
+  height: calc(var(--font-size) * 3);
+  text-align: center;
+  background-color: #222;
+  color: #fff;
+  z-index: 200;
+  font-size: var(--font-size);
+}
+.App-header a {
+  color: #ff0;
+}
+.App-input-bar {
+  padding-top: 0.3em;
+  padding-bottom: 0.3em;
+}
+.App-status-bar {
+  position: relative;
+  background-color: #ffb6c1;
+  height: 1em;
+  transition: 0.3s;
+  overflow: hidden;
+}
+.App-status-bar,
+.App-title {
+  font-size: larger;
+  font-weight: bolder;
+}
+.hidden {
+  height: 0;
+}
+.App-body {
+  position: absolute;
+  width: 100%;
+  top: calc(var(--font-size) * 4);
+  text-align: center;
+  font-size: var(--font-size);
+}
+.App-body button,
+.App-body input {
+  font-size: var(--font-size);
+}
+.App-chooser {
+  background-color: #ffe4c4;
+}
+.App-chooser input#user {
+  width: var(--app-chooser_input_user);
+}
+.App-chooser,
+.App-data {
+  margin-left: auto;
+  margin-right: auto;
+  width: var(--app_width);
+}
+.App-data-paginator {
+  display: inline-block;
+  float: left;
+}
+.App-data__input-per-page {
+  float: right;
+}
+.App-data__input-per-page input {
+  width: 2.5em;
+}
+.App-data table {
+  border: 2px solid;
+  margin-top: 0.2em;
+  text-align: left;
+  border-collapse: collapse;
+  width: 100%;
+}
+.App-data table thead,
+.App-data table caption {
+  text-align: center;
+  background-color: #d3d3d3;
+}
+.App-data table th,
+.App-data table td {
+  border: 1px solid;
+}
+.App-data table img {
+  margin-left: 0.5em;
+  width: 3em;
+  height: 3em;
+}
+.App-data table td a {
+  vertical-align: super;
+  margin-left: 0.5em;
+  margin-right: 0.5em;
+}
+.App-issue-detailed {
+  margin-left: auto;
+  margin-right: auto;
+  width: var(--app_width);
+}
+.App-issue-detailed table {
+  border: 2px solid;
+  margin-top: 0.2em;
+  text-align: left;
+  border-collapse: collapse;
+  width: 100%;
+}
+.App-issue-detailed table thead,
+.App-issue-detailed table caption {
+  text-align: center;
+  background-color: #d3d3d3;
+}
+.App-issue-detailed table th,
+.App-issue-detailed table td {
+  border: 1px solid;
+}
+.App-issue-detailed table img {
+  margin-left: 0.5em;
+  width: 3em;
+  height: 3em;
+}
+.App-issue-detailed table td a {
+  vertical-align: super;
+  margin-left: 0.5em;
+  margin-right: 0.5em;
+}
