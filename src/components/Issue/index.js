@@ -7,7 +7,7 @@ class Issue extends Component {
         let {number, title, user, created_at} = this.props.issue;
         return (
             <tr>
-                <td><Link to={`/issue/${number}`}>{number}</Link></td>
+                <td>{number}</td>
                 <td><Date2Rus date={created_at} /></td>
                 <td><Link to={`/issue/${number}`}>{title}</Link></td>
                 <td>

@@ -229,7 +229,7 @@ class App extends Component {
                                        onBlur={this.onBlurInputUser}
                                        id="user"
                                 />
-                                <button onClick={this.onClickFindIssues}>Поиск</button>
+                                <Link to="/"><button onClick={this.onClickFindIssues}>Поиск</button></Link>
                             </div>
                             {/*Всплывающая строка статуса*/}
                             <div className="App-status-bar"

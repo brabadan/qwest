@@ -115,14 +115,16 @@
   border: 1px solid;
 }
 .App-data table img {
-  margin-left: 0.5em;
   width: 3em;
   height: 3em;
 }
+.App-data table td {
+  padding-left: 0.5em;
+  padding-right: 0.5em;
+}
 .App-data table td a {
+  margin-left: 0.2em;
   vertical-align: super;
-  margin-left: 0.5em;
-  margin-right: 0.5em;
 }
 .App-issue-detailed {
   margin-left: auto;
@@ -146,12 +148,14 @@
   border: 1px solid;
 }
 .App-issue-detailed table img {
-  margin-left: 0.5em;
   width: 3em;
   height: 3em;
 }
+.App-issue-detailed table td {
+  padding-left: 0.5em;
+  padding-right: 0.5em;
+}
 .App-issue-detailed table td a {
+  margin-left: 0.2em;
   vertical-align: super;
-  margin-left: 0.5em;
-  margin-right: 0.5em;
 }
