@@ -1,7 +1,34 @@
 import React, {Component} from 'react';
 import {Link} from 'react-router-dom';
-import Date2Rus from '../Date2Rus/index';
+import Date2Rus from './Date2Rus';
 
+/**
+ * @props: {
+ *     repo: {
+ *         full_name: string - название репозитария в виде USER/REPO
+ *     },
+ *     issues: [
+ *         {
+ *             number: number - Номер проблемы
+ *             title: string - навание проблемы
+ *             created_at: date - дата создания issue
+ *             body: string - полное описание проблемы
+ *             state: string - статус проблемы ОТКРЫТО/ЗАКРЫТО
+ *             user: {
+ *                  login: string - имя пользователя Github
+ *                  avatar_url: string - ссылка на аватарку
+ *                  html_url: string - ссылка на страницу пользователя
+ *             }
+ *
+ *         }
+ *     ],
+ *     match: {
+ *         params: {
+ *             number: number - номер пробемы из URL (/issue/:number)
+ *         }
+ *     }
+ * }
+ */
 class IssueDetailed extends Component {
     render() {
         let {repo, issues, match: {params: {number}}} = this.props;

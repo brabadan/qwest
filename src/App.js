@@ -1,12 +1,11 @@
 import React, {Component} from 'react';
 import {HashRouter, Link, Route, Switch} from 'react-router-dom';
 import './App.css';
-// import RepoList from './components/RepoList/index'
-import IssueList from './components/IssueList/index';
-import Pagination from './components/Pagination/index';
-import Request from './components/Request/Request';
-import DropDownList from './components/DropDownList/DropDownList';
-import IssueDetailed from "./components/IssueDetailed";
+import IssueList from './components/IssueList';
+import Pagination from './components/Pagination';
+import Request from './components/Request';
+import DropDownList from './components/DropDownList';
+import IssueDetailed from './components/IssueDetailed';
 
 const UrlUser = 'https://api.github.com/users/';
 const FirstStatusText = `Введите пользователя и репозитарий например: laravel/ideas`;
@@ -34,7 +33,6 @@ class App extends Component {
         this.onBlurInputUser = this.onBlurInputUser.bind(this);
         this.onFocusDropDown = this.onFocusDropDown.bind(this);
         this.onSelectDropDown = this.onSelectDropDown.bind(this);
-        // this.onSelectRepo = this.onSelectRepo.bind(this);
         this.onClickFindIssues = this.onClickFindIssues.bind(this);
         this.showIssuesFirst = this.showIssuesFirst.bind(this);
         this.showIssuesPage = this.showIssuesPage.bind(this);
@@ -51,26 +49,31 @@ class App extends Component {
         this.dropDownEl = el
     };
 
+    // Устанавливаем размеры DOM элементу DropDownList
     setDropDownSize() {
         this.dropDownEl.style.left = this.inputUser.current.offsetLeft + 'px';
         this.dropDownEl.style.top = (this.inputUser.current.offsetTop + this.inputUser.current.offsetHeight) + 'px';
         this.dropDownEl.style.width = (this.inputUser.current.offsetWidth - 2) + 'px';
     }
 
+    // Показываем строку состояния
     showStatusText(statusText) {
         this.statusBar.current.classList.remove('hidden');
         this.setState({statusText});
     }
 
+    // Прячем строку состояния
     hideStatusText() {
         this.statusBar.current.classList.add('hidden');
     }
 
+    // При нажатии на номер страницы в Пагинаторе - переключаем её
     onChoicePage(e) {
         let curPage = e.target.value;
         this.setState({curPage}, this.showIssuesPage);
     }
 
+    // При изменении количества одновременно выводимых issue - выводим заново таблицу
     onChangePerPage(e) {
         let perPage = e.target.valueAsNumber, repo = this.state.repo || {open_issues: 0};
         if (perPage < 1) perPage = 1;
@@ -107,7 +110,7 @@ class App extends Component {
      * Событие ухода с поля ввода имени и репо
      */
     onBlurInputUser() {
-        // Скрываем всплывающий список репо. Задержка на случай если ушли на список.
+        // Скрываем всплывающий список репо. Задержка на случай если ушли на список, чтоб отменить его скрытие.
         this.timeoutHiddenDropDown = setTimeout(() => {
             this.setState({dropDownHidden: true});
         }, 200);
@@ -121,13 +124,15 @@ class App extends Component {
         clearTimeout(this.timeoutHiddenDropDown);
     }
 
+    // Поиск репозитариев для введенного Пользователя
     findUsersRepos() {
         let user = this.state.user;
+        // Получаем с Github данные для введенного пользователя
         this.request(UrlUser + user)
             .then(res => {
-                if (res.repos_url) {
+                if (res.repos_url) { // Если есть, получаем ссылку на репозитарии и запрашиваем их с Github
                     return this.request(res.repos_url)
-                } else {
+                } else { // иначе прокидываем ошибку
                     throw new Error(`!!!Не получен url списка репозитариев для: ${user}`);
                 }
             })
@@ -137,16 +142,17 @@ class App extends Component {
                 if (repos.length > 0) {
                     this.hideStatusText();
                     this.setState({repos});
-                } else { //  иначе сообщение
+                } else { //  иначе сообщение в строке статуса
                     this.showStatusText(`!!!Репозитарии для ${this.state.user} не найдены`);
                 }
             })
-            .catch(err => {
+            .catch(err => { // Если произошла ошибка - выводим её в строку статуса
                 this.showStatusText('!!!Ошибка при поиске репозитариев: ' + err);
                 console.log('error:', err)
             });
     }
 
+    // Событие выбора репозитария в выпадающем списке
     onSelectDropDown(e) {
         let repoNum = e.target.dataset.index;
         let repo = this.state.repos[repoNum];
@@ -155,12 +161,14 @@ class App extends Component {
         this.setState({repoNum, repo, inputUserRepo, repoFilter}, this.showIssuesFirst);
     }
 
+    // Событие нажатия на кнопку Поиск
     onClickFindIssues() {
         let repoNum = -1;
+        // Ищем репозитарий с введенным названием
         this.state.repos.forEach((repo, index) => {
             if (repo.name === this.state.repoFilter) repoNum = index;
         });
-        if (repoNum >= 0) {
+        if (repoNum >= 0) { // Если нашли - выводим список его Issues
             this.setState({repoNum}, this.showIssuesFirst);
         } else {
             this.showStatusText(`!!!Не найден репозитарий: ${this.state.inputUserRepo}`);
@@ -168,6 +176,7 @@ class App extends Component {
         }
     }
 
+    // Начинаем показывать Issues с первой страницы
     showIssuesFirst() {
         if (this.state.repoNum > 0
             && this.state.repos[this.state.repoNum]
@@ -180,20 +189,21 @@ class App extends Component {
         }
     }
 
+    // Показываем Issues на установленной странице
     showIssuesPage() {
         let {curPage, perPage, repo = {issues_url: ''}} = this.state;
         if (!repo.open_issues || !repo.issues_url) return;
         let url = repo.issues_url.replace('{/number}', '/');
-        let promises = [];
-        let min = (curPage - 1) * perPage + 1;
-        let max = Math.min(repo.open_issues, min + perPage - 1);
-        for (let i = min; i <= max; i++) {
-            let promise = this.request(url + i.toString());
+        let promises = []; // массив промисов для запроса Issues
+        let issueFrom = (curPage - 1) * perPage + 1;
+        let issueTo = Math.min(repo.open_issues, issueFrom + perPage - 1);
+        for (let issueNum = issueFrom; issueNum <= issueTo; issueNum++) {
+            let promise = this.request(url + issueNum.toString());
             promises.push(promise);
         }
         this.showStatusText(`Ищем ${curPage} страницу issues для ${repo.full_name} ...`);
-        Promise.all(promises)
-            .then(issues => {
+        Promise.all(promises) // Запрашиваем Issues с Github
+            .then(issues => { // Сохраняем их в this.state.issues - для обновления на экране
                 this.hideStatusText();
                 this.setState({issues});
             })
@@ -257,7 +267,6 @@ class App extends Component {
                             {/*Таблица с пагинацией - Все ISSUE данного репо */}
                             <Route exact path="/" render={() => {
                                 return (
-
                                     <div className="App-data">
                                         <table>
                                             <caption>
@@ -283,7 +292,6 @@ class App extends Component {
                                             </thead>
                                             <IssueList issues={this.state.issues} repo={this.state.repo}/>
                                         </table>
-
                                     </div>
                                 )
                             }

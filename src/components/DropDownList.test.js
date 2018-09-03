@@ -12,7 +12,7 @@ it('renders DropDownList without crashing', () => {
         repoFilter: '',
         repos: [{
             name: 'name',
-            full_name: 'fullname',
+            full_name: 'full_name',
             open_issues: 1
         }]
     };

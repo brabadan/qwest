@@ -1,7 +1,19 @@
 import React, {Component} from 'react';
 import { Link } from 'react-router-dom';
-import Date2Rus from '../Date2Rus/index';
+import Date2Rus from './Date2Rus';
 
+/**
+ * @props: {
+ *     number: number - номер проблемы
+ *     title: string - навание проблемы
+ *     created_at: date - дата создания issue
+ *     user: {
+ *         login: string - имя пользователя Github
+ *         avatar_url: string - ссылка на аватарку
+ *         html_url: string - ссылка на страницу пользователя
+ *     }
+ * }
+ */
 class Issue extends Component {
     render() {
         let {number, title, user, created_at} = this.props.issue;
